@@ -1,0 +1,91 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "RdmBeamStructure",
+  "description": "JSON schema representing a beam structure in RDM Solver",
+  "type": "object",
+  "required": ["length", "supports", "loads"],
+  "properties": {
+    "id": { "type": "string" },
+    "name": { "type": "string" },
+    "length": {
+      "type": "number",
+      "minimum": 0.01,
+      "description": "Total length of the beam in meters (m)"
+    },
+    "supports": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "type", "position"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "type": {
+            "type": "string",
+            "enum": ["PINNED", "ROLLER", "FIXED"],
+            "description": "PINNED = Articulation (Rx, Ry); ROLLER = Appui simple (Ry); FIXED = Encastrement (Rx, Ry, M)"
+          },
+          "position": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Abscissa x in meters"
+          }
+        }
+      }
+    },
+    "loads": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "type", "positionStart"],
+        "properties": {
+          "id": { "type": "string" },
+          "type": {
+            "type": "string",
+            "enum": ["POINT_FORCE", "DISTRIBUTED_UNIFORM", "DISTRIBUTED_TRIANGULAR", "MOMENT"]
+          },
+          "positionStart": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Start abscissa x1 in meters"
+          },
+          "positionEnd": {
+            "type": "number",
+            "minimum": 0,
+            "description": "End abscissa x2 in meters (for distributed loads)"
+          },
+          "magnitude": {
+            "type": "number",
+            "description": "Magnitude in kN (point), kN/m (distributed), or kN·m (moment). Sign: positive downwards for vertical loads, clockwise for moments"
+          },
+          "magnitudeEnd": {
+            "type": "number",
+            "description": "Magnitude at positionEnd for triangular/trapezoidal loads in kN/m"
+          },
+          "angleDegrees": {
+            "type": "number",
+            "default": 90.0,
+            "description": "Load angle with beam axis (90 = downward vertical)"
+          }
+        }
+      }
+    },
+    "material": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "youngModulusE_GPa": { "type": "number", "default": 210.0 },
+        "yieldStrengthFy_MPa": { "type": "number", "default": 235.0 }
+      }
+    },
+    "section": {
+      "type": "object",
+      "properties": {
+        "type": { "type": "string", "enum": ["RECTANGLE", "I_BEAM", "T_BEAM", "CIRCLE"] },
+        "inertiaIz_cm4": { "type": "number" },
+        "areaA_cm2": { "type": "number" },
+        "height_mm": { "type": "number" }
+      }
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "name": "RDM Solver",
+  "description": "Calculateur et solveur de Résistance des Matériaux pour étudiants et ingénieurs civils : réactions, diagrammes N/T/M pas à pas, et vérifications.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
